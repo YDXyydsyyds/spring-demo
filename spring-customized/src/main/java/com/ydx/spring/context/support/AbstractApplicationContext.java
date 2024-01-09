@@ -11,6 +11,7 @@ import com.ydx.spring.context.event.ApplicationEventMulticaster;
 import com.ydx.spring.context.event.ContextCloseEvent;
 import com.ydx.spring.context.event.ContextRefreshedEvent;
 import com.ydx.spring.context.event.SimpleApplicationEventMulticaster;
+import com.ydx.spring.core.convert.ConversionService;
 import com.ydx.spring.core.io.DefaultResourceLoader;
 import com.ydx.spring.core.io.Resource;
 
@@ -28,6 +29,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
     public static final String APPLICATION_EVENT_MULTICASTER_BEAN_NAME = "applicationEventMulticaster";
 
     private ApplicationEventMulticaster applicationEventMulticaster;
+
+    public static final String CONVERSION_SERVICE_BEAN_NAME = "conversionService";
 
     @Override
     public void refresh() throws BeansException {
@@ -105,7 +108,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
     protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory){
         //设置类型转换器
-
+        if(beanFactory.containsBean(CONVERSION_SERVICE_BEAN_NAME)){
+            Object conversionService = beanFactory.getBean(CONVERSION_SERVICE_BEAN_NAME);
+            if(conversionService instanceof ConversionService){
+                beanFactory.setConversionService((ConversionService) conversionService);
+            }
+        }
         //提前实例化单bean
         beanFactory.preInstantiateSingletons();
     }

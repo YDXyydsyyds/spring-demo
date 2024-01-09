@@ -95,7 +95,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
              throw new BeansException("Cannot find class [" + className + "]");
          }
          //id优先于name
-         beanName = StrUtil.isEmpty(beanId) ? beanId : beanName;
+         beanName = StrUtil.isNotEmpty(beanId) ? beanId : beanName;
          if(StrUtil.isEmpty(beanName)){
              beanName = StrUtil.lowerFirst(clazz.getSimpleName());
          }

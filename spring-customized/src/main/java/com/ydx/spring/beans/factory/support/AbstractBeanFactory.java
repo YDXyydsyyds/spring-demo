@@ -1,10 +1,12 @@
 package com.ydx.spring.beans.factory.support;
 
 import com.ydx.spring.beans.BeansException;
-import com.ydx.spring.beans.factory.ConfigurableBeanFactory;
+import com.ydx.spring.beans.factory.config.ConfigurableBeanFactory;
 import com.ydx.spring.beans.factory.FactoryBean;
 import com.ydx.spring.beans.factory.config.BeanDefinition;
 import com.ydx.spring.beans.factory.config.BeanPostProcessor;
+import com.ydx.spring.core.convert.ConversionService;
+import com.ydx.spring.util.StringValueResolver;
 
 import java.util.*;
 
@@ -12,6 +14,10 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
     private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
     private final Map<String, Object> factoryBeanObjectCache = new HashMap<>();
+
+    private final List<StringValueResolver> embeddedValueResolvers = new ArrayList<>();
+
+    private ConversionService conversionService;
 
     @Override
     public Object getBean(String name) throws BeansException {
@@ -69,5 +75,31 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
         //有则覆盖
         this.beanPostProcessors.remove(beanPostProcessor);
         this.beanPostProcessors.add(beanPostProcessor);
+    }
+    public List<BeanPostProcessor> getBeanPostProcessors(){
+        return this.beanPostProcessors;
+    }
+
+
+    public void addEmbeddedValueResolver(StringValueResolver valueResolver) {
+        this.embeddedValueResolvers.add(valueResolver);
+    }
+
+
+    public String resolveEmbeddedValue(String value) {
+        String result = value;
+        for (StringValueResolver resolver : this.embeddedValueResolvers) {
+            result = resolver.resolveStringValue(result);
+        }
+        return result;
+    }
+
+
+    public void setConversionService(ConversionService conversionService) {
+         this.conversionService = conversionService;
+    }
+
+    public ConversionService getConversionService() {
+        return conversionService;
     }
 }

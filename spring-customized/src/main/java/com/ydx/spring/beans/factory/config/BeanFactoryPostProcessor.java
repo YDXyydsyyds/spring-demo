@@ -1,6 +1,7 @@
 package com.ydx.spring.beans.factory.config;
 
 import com.ydx.spring.beans.BeansException;
+import com.ydx.spring.beans.factory.ConfigurableListableBeanFactory;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,5 +12,5 @@ import com.ydx.spring.beans.BeansException;
  */
 public interface BeanFactoryPostProcessor {
 
-   void postProcessBeanFactory(ConfigurableBeanFactory beanFactory) throws BeansException;
+   void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException;
 }

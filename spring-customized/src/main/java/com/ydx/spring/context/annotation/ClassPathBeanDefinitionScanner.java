@@ -1,6 +1,7 @@
 package com.ydx.spring.context.annotation;
 
 import cn.hutool.core.util.StrUtil;
+import com.ydx.spring.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import com.ydx.spring.beans.factory.config.AutowireCapableBeanFactory;
 import com.ydx.spring.beans.factory.config.BeanDefinition;
 import com.ydx.spring.beans.factory.support.BeanDefinitionRegistry;
@@ -39,7 +40,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
         }
 
         //注册处理@Autowired和@Value注解的BeanPostProcessor
-        registry.registerBeanDefinition(AUTOWIRED_ANNOTATION_PROCESSOR_BEAN_NAME, new BeanDefinition(AutowireCapableBeanFactory.class));
+        registry.registerBeanDefinition(AUTOWIRED_ANNOTATION_PROCESSOR_BEAN_NAME, new BeanDefinition(AutowiredAnnotationBeanPostProcessor.class));
     }
 
     /**
